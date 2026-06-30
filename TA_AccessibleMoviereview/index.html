@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>திரைவிமர்சனம் - பயன்படுத்தும்படியாக்கப்பட்ட தளம்</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f5ebcf; 
+            --text-color: #000080; 
+            --primary-color: #000080;
+            --card-bg: #e6dec5;
+            --btn-bg: #000080;
+            --btn-text: #f5ebcf;
+        }
+
+        body.inverted {
+            --bg-color: #000080;
+            --text-color: #f5ebcf;
+            --primary-color: #f5ebcf;
+            --card-bg: #000066;
+            --btn-bg: #f5ebcf;
+            --btn-text: #000080;
+        }
+
+        body {
+            font-family: 'Hind Madurai', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            transition: all 0.4s ease;
+        }
+
+        /* Focus Indicator */
+        *:focus { outline: 6px solid #FF4500 !important; outline-offset: 4px; }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        button {
+            padding: 12px 18px;
+            cursor: pointer;
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: 2px solid var(--btn-text);
+            font-weight: bold;
+            border-radius: 6px;
+            font-family: 'Hind Madurai', sans-serif;
+        }
+
+        #voice-toggle { background: #28a745; color: white; border-color: white; min-width: 220px; }
+        #voice-toggle.playing { background: #d9534f; }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .sidebar { background: var(--card-bg); padding: 20px; border-radius: 10px; border: 2px solid var(--text-color); height: fit-content; }
+        .sidebar a { 
+            color: var(--text-color); 
+            text-decoration: none; 
+            font-weight: bold; 
+            display: block; 
+            padding: 12px; 
+            border-radius: 4px; 
+            margin-bottom: 8px; 
+            border: 1px solid var(--text-color);
+        }
+
+        .movie-content section, .movie-content article, .movie-content div[tabindex="0"] {
+            margin-bottom: 20px; padding: 15px; border-radius: 8px;
+        }
+
+        .featured-image { width: 100%; border-radius: 12px; border: 3px solid var(--text-color); }
+
+        .review-card { background: var(--card-bg); border: 3px solid var(--text-color); }
+        .ott-info { background: var(--primary-color); color: var(--bg-color); padding: 15px; border-radius: 8px; font-weight: bold; }
+
+        .trending-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .trending-card { background: var(--card-bg); padding: 15px; text-align: center; border: 2px solid var(--text-color); border-radius: 8px; font-weight: bold; }
+
+        @media (max-width: 850px) { .layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header role="banner">
+        <div class="controls">
+            <div style="font-size: 1.5rem; font-weight: bold;" tabindex="0" onfocus="speakThis('திரை விமர்சன தளம்')">திரை-விமர்சனம்</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button id="voice-toggle" 
+                        onfocus="speakThis('திரை வாசிப்பு')" 
+                        onmouseover="speakThis('திரை வாசிப்பு')" 
+                        onclick="toggleMainSpeech()">திரை வாசிப்பு: முடக்கப்பட்டுள்ளது</button>
+                
+                <button onfocus="speakThis('எழுத்தைப் பெரிதாக்கல்')" 
+                        onmouseover="speakThis('எழுத்தைப் பெரிதாக்கல்')" 
+                        onclick="changeFontSize('increase')">எழுத்தைப் பெரிதாக்கல்</button>
+                
+                <button onfocus="speakThis('எழுத்தைச் சிறிதாக்கல்')" 
+                        onmouseover="speakThis('எழுத்தைச் சிறிதாக்கல்')" 
+                        onclick="changeFontSize('decrease')">எழுத்தைச் சிறிதாக்கல்</button>
+                
+                <button onfocus="speakThis('நிற மாற்றம்')" 
+                        onmouseover="speakThis('நிற மாற்றம்')" 
+                        onclick="toggleContrast()">நிற மாற்றம்</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <h2 tabindex="0" onfocus="speakThis('பிற விமர்சனங்கள் பகுதி')">பிற விமர்சனங்கள்</h2>
+            <nav>
+                <ul>
+                    <li><a href="#" onfocus="speakThis('பூமிகா விமர்சனம்')">பூமிகா</a></li>
+                    <li><a href="#" onfocus="speakThis('தலைவர் தம்பி தலைமையில் விமர்சனம்')">தலைவர் தம்பி தலைமையில்</a></li>
+                    <li><a href="#" onfocus="speakThis('மகான் விமர்சனம்')">மகான்</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main id="main-content" class="movie-content">
+            <h1 tabindex="0" onfocus="speakThis('திரைப்படத் தலைப்பு: பொன்னியின் செல்வன் பாகம் ஒன்று விமர்சனம்')">பொன்னியின் செல்வன்: பாகம் 1 - விமர்சனம்</h1>
+
+            <img src="https://www.bollywoodhungama.com/wp-content/uploads/2022/09/Ponniyin-Selvan-becomes-the-first-Tamil-film-620.jpg" 
+                 alt="வரலாற்றுத் திரைப்படக் காட்சி" class="featured-image" tabindex="0" onfocus="speakThis('படம்: வரலாற்றுத் திரைப்படக் காட்சி')">
+
+            <article tabindex="0" onfocus="speakThis('விரிவான விமர்சனம்: ' + this.innerText)">
+                <h2>விரிவான விமர்சனம்</h2>
+                <p>கல்கியின் அமர காவியமான பொன்னியின் செல்வன் திரைப்படமாக உருவெடுத்திருப்பது தமிழ் சினிமாவின் மைல்கல். மணிரத்னத்தின் இயக்கத்தில் சோழர் காலத்து பிரம்மாண்டம் திரையில் உயிர் பெற்றுள்ளது.</p>
+            </article>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <section class="review-card" tabindex="0" onfocus="speakThis('பத்திரிக்கையாளர் விமர்சனம்: ' + this.innerText)">
+                    <h3>பத்திரிக்கையாளர் விமர்சனம்</h3>
+                    <p>5-க்கு 4.5 மதிப்பெண்கள். தொழில்நுட்ப ரீதியாக இந்திய சினிமாவின் உச்சம்.</p>
+                </section>
+
+                <section class="review-card" tabindex="0" onfocus="speakThis('பெற்றோர் வழிகாட்டுதல்: ' + this.innerText)">
+                    <h3>பெற்றோர் வழிகாட்டுதல்</h3>
+                    <p>மிதமான போர் காட்சிகள் உள்ளன. பெரியவர்களின் துணையுடன் பார்க்கலாம்.</p>
+                </section>
+            </div>
+
+            <div class="ott-info" tabindex="0" onfocus="speakThis(this.innerText)">
+                படம் கிடைக்கும் இணையதளங்கள்: Amazon Prime Video, Netflix
+            </div>
+
+            <section style="margin-top: 30px;">
+                <h2 tabindex="0" onfocus="speakThis('பேசுபொருளாகும் படங்கள் பகுதி')">பேசுபொருளாகும் படங்கள்</h2>
+                <div class="trending-grid">
+                    <div class="trending-card" tabindex="0" onfocus="speakThis('பராசக்தி')">பராசக்தி</div>
+                    <div class="trending-card" tabindex="0" onfocus="speakThis('சூது கவ்வும்')">சூது கவ்வும்</div>
+                    <div class="trending-card" tabindex="0" onfocus="speakThis('டாக்டர்')">டாக்டர்</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        let voiceEnabled = false;
+
+        function speakThis(text) {
+            // "திரை வாசிப்பு" பட்டன் மட்டும் எப்போதும் வேலை செய்யும், 
+            // மற்றவை அது இயக்கப்பட்டிருந்தால் மட்டுமே வேலை செய்யும்.
+            if (voiceEnabled || text === 'திரை வாசிப்பு') {
+                window.speechSynthesis.cancel();
+                const speech = new SpeechSynthesisUtterance(text);
+                speech.lang = 'ta-IN';
+                window.speechSynthesis.speak(speech);
+            }
+        }
+
+        function toggleMainSpeech() {
+            const btn = document.getElementById('voice-toggle');
+            if (!voiceEnabled) {
+                voiceEnabled = true;
+                btn.innerText = "திரை வாசிப்பு: இயங்குகிறது";
+                btn.classList.add('playing');
+                speakThis("திரை வாசிப்பு இயக்கப்பட்டிருக்கிறது");
+            } else {
+                voiceEnabled = false;
+                window.speechSynthesis.cancel();
+                btn.innerText = "திரை வாசிப்பு: முடக்கப்பட்டுள்ளது";
+                btn.classList.remove('playing');
+                // முடக்கத்தை ஒருமுறை மட்டும் அறிவித்தல்
+                const feedback = new SpeechSynthesisUtterance("திரை வாசிப்பு முடக்கப்பட்டது");
+                feedback.lang = 'ta-IN';
+                window.speechSynthesis.speak(feedback);
+            }
+        }
+
+        function changeFontSize(action) {
+            let body = document.body;
+            let currentSize = parseFloat(window.getComputedStyle(body).fontSize);
+            body.style.fontSize = (action === 'increase' ? currentSize + 2 : currentSize - 2) + 'px';
+            speakThis(action === 'increase' ? "எழுத்து பெரிதாக்கப்பட்டது" : "எழுத்து சிறிதாக்கப்பட்டது");
+        }
+
+        function toggleContrast() {
+            document.body.classList.toggle('inverted');
+            const isInverted = document.body.classList.contains('inverted');
+            speakThis(isInverted ? "கருநீல பின்னணிக்கு மாற்றப்பட்டது" : "பின்னணி நிறம் மாற்றப்பட்டது");
+        }
+    </script>
+</body>
+</html>
