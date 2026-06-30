@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>இனிய பேக்கரி - பயன்படுத்தும்படி ஆக்குதல் தளம்</title>
+    <style>
+        :root {
+            --bg-color: #f7e9e9;
+            --text-color: #000080;
+            --btn-bg: #000080;
+            --btn-text: #ffffff;
+        }
+
+        .high-contrast {
+            --bg-color: #000080;
+            --text-color: #f7e9e9;
+            --btn-bg: #f7e9e9;
+            --btn-text: #000080;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0; padding: 20px;
+            transition: 0.3s;
+        }
+
+        /* விசைப்பலகை குவியம் (Focus) */
+        :focus {
+            outline: 5px solid #ff4500;
+            outline-offset: 5px;
+        }
+
+        .access-bar {
+            display: flex; gap: 10px; padding: 15px;
+            border-bottom: 2px solid var(--text-color);
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            padding: 10px 20px; cursor: pointer;
+            background: var(--btn-bg); color: var(--btn-text);
+            border: 2px solid var(--text-color);
+            font-weight: bold; border-radius: 5px;
+        }
+
+        .gallery {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; margin: 20px 0;
+        }
+
+        .cake-card { 
+            border: 2px solid var(--text-color); 
+            padding: 10px; border-radius: 10px; text-align: center;
+        }
+
+        .cake-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 5px; }
+
+        .order-section { border: 2px solid var(--text-color); padding: 20px; border-radius: 10px; }
+        .form-item { margin-bottom: 20px; }
+        
+        select, input, textarea {
+            width: 100%; padding: 12px; margin-top: 8px;
+            background: transparent; color: var(--text-color);
+            border: 1px solid var(--text-color);
+            display: block;
+        }
+
+        footer { margin-top: 40px; padding: 20px; border-top: 2px solid; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <nav class="access-bar">
+        <button class="toggle-btn" id="readerBtn" onclick="toggleReader()">திரைவாசிப்பு: இல்லை</button>
+        <button class="toggle-btn" onclick="zoom(1.2)">பெரிதாக்குக</button>
+        <button class="toggle-btn" onclick="zoom(0.8)">சிறிதாக்குக</button>
+        <button class="toggle-btn" onclick="document.body.classList.toggle('high-contrast')">நிறம் மாற்றுக</button>
+    </nav>
+
+    <h1 tabindex="0">இனிய பேக்கரி - சுவை மற்றும் தரம்</h1>
+
+    <section class="gallery">
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d" alt="மூன்று அடுக்கு வெண்ணிலா கேக்">
+            <p>சிக்னேச்சர் கேக்</p>
+        </div>
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?q=80&w=803&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="பிளாக் பாரெஸ்ட் சாக்லேட் கேக்">
+            <p>பிளாக் ஃபாரெஸ்ட்</p>
+        </div>
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187" alt="ஸ்ட்ராபெரி பழங்கள் கொண்ட கேக்">
+            <p>ஸ்ட்ராபெரி டிலைட்</p>
+        </div>
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636" alt="பிளாக் கரண்ட் கிரீம் கேக்">
+            <p>பிளாக் கரண்ட்</p>
+        </div>
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3" alt="வண்ணமயமான ரெயின்போ கேக்">
+            <p>ரெயின்போ கேக்</p>
+        </div>
+        <div class="cake-card" tabindex="0">
+            <img src="https://images.unsplash.com/photo-1666453579043-fef25e9ce099?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="வெள்ளை நிற மில்க் கேக்">
+            <p>ஒயிட் கரெண்ட்</p>
+        </div>
+    </section>
+
+    <section class="order-section">
+        <h2 tabindex="0">உங்கள் விருப்பப்படி கேக்கை வடிவமைக்கவும்</h2>
+        
+        <div class="form-item">
+            <span id="eggLabel" tabindex="0">முட்டைச் சேர்க்கை:</span>
+            <button class="toggle-btn" id="eggBtn" onclick="toggleEgg()" aria-labelledby="eggLabel">ஆம்</button>
+        </div>
+
+        <div class="form-item">
+            <label for="cakeType" id="typeLabel">கேக் வகை தேர்வு செய்க:</label>
+            <select id="cakeType" onchange="speakValue(this)" aria-labelledby="typeLabel">
+                <option value="பிளாக் ஃபாரெஸ்ட்">பிளாக் ஃபாரெஸ்ட்</option>
+                <option value="பிளாக் கரண்ட்">பிளாக் கரண்ட்</option>
+                <option value="ஒயிட் கரெண்ட்">ஒயிட் கரெண்ட்</option>
+                <option value="கிரீம் கேக்">கிரீம் கேக்</option>
+            </select>
+        </div>
+
+        <div class="form-item">
+            <label for="cakeColor" id="colorLabel">விருப்பமான நிறம் தேர்வு செய்க:</label>
+            <select id="cakeColor" onchange="speakValue(this)" aria-labelledby="colorLabel">
+                <option value="வெள்ளை">வெள்ளை</option>
+                <option value="இளஞ்சிவப்பு">இளஞ்சிவப்பு</option>
+                <option value="சாக்லேட் பிரவுன்">சாக்லேட் பிரவுன்</option>
+                <option value="மஞ்சள்">மஞ்சள்</option>
+            </select>
+        </div>
+
+        <div class="form-item">
+            <label for="design" id="fileLabel">மாதிரி வடிவமைப்பு (படம்):</label>
+            <input type="file" id="design" onchange="speakText('படம் தேர்ந்தெடுக்கப்பட்டது')" aria-labelledby="fileLabel">
+        </div>
+
+        <button class="toggle-btn" style="width:100%;" onclick="speakText('ஆர்டர் சமர்ப்பிக்கப்பட்டது')">ஆர்டர் செய்க</button>
+    </section>
+
+    <footer>
+        <p tabindex="0"><strong>முகவரி:</strong> 45, அண்ணா சாலை, சென்னை - 600002.</p>
+        <p tabindex="0"><strong>வாட்சாப்:</strong> +91 90000 12345</p>
+        <hr>
+        <h3 tabindex="0">பேசுபொருளாகும் (Trending) கேக் வகைகள்:</h3>
+        <p tabindex="0">பிளாக் ஃபாரெஸ்ட், ரெட் வெல்வெட், பிளாக் கரண்ட், ஒயிட் கரெண்ட், கிரீம் கேக்</p>
+    </footer>
+
+    <script>
+        let isReaderActive = false;
+        let fontSize = 16;
+
+        function toggleReader() {
+            isReaderActive = !isReaderActive;
+            const btn = document.getElementById('readerBtn');
+            btn.innerText = isReaderActive ? "திரைவாசிப்பு: ஆம்" : "திரைவாசிப்பு: இல்லை";
+            speakText(isReaderActive ? "திரைவாசிப்பு இயக்கப்பட்டது" : "திரைவாசிப்பு நிறுத்தப்பட்டது");
+        }
+
+        function toggleEgg() {
+            const btn = document.getElementById('eggBtn');
+            const isYes = btn.innerText === "ஆம்";
+            btn.innerText = isYes ? "இல்லை" : "ஆம்";
+            speakText("முட்டைச் சேர்க்கை: " + (isYes ? "இல்லை" : "ஆம்"));
+        }
+
+        function zoom(s) {
+            fontSize *= s;
+            document.body.style.fontSize = fontSize + 'px';
+        }
+
+        function speakText(text) {
+            if (isReaderActive) {
+                window.speechSynthesis.cancel();
+                let speech = new SpeechSynthesisUtterance(text);
+                speech.lang = 'ta-IN';
+                window.speechSynthesis.speak(speech);
+            }
+        }
+
+        function speakValue(element) {
+            // லேபிள் மற்றும் மதிப்பைச் சேர்த்து வாசித்தல்
+            const label = document.getElementById(element.getAttribute('aria-labelledby')).innerText;
+            speakText(label + " " + element.value);
+        }
+
+        // விசைப்பலகை வழிசெலுத்தல் மேம்பாடு
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Tab' && isReaderActive) {
+                setTimeout(() => {
+                    const el = document.activeElement;
+                    let toSpeak = "";
+
+                    // லேபிள்களைக் கண்டறிந்து வாசித்தல்
+                    if (el.tagName === "BUTTON") {
+                        const linkedLabel = el.getAttribute('aria-labelledby');
+                        const labelText = linkedLabel ? document.getElementById(linkedLabel).innerText : "";
+                        toSpeak = labelText + " " + el.innerText;
+                    } else if (el.tagName === "SELECT" || el.tagName === "INPUT") {
+                        const linkedLabel = el.getAttribute('aria-labelledby');
+                        const labelText = linkedLabel ? document.getElementById(linkedLabel).innerText : "";
+                        toSpeak = labelText + (el.value && el.tagName !== "INPUT" ? " " + el.value : "");
+                    } else if (el.classList.contains("cake-card")) {
+                        const imgAlt = el.querySelector('img').alt;
+                        const pText = el.querySelector('p').innerText;
+                        toSpeak = imgAlt + ". " + pText;
+                    } else {
+                        toSpeak = el.innerText || el.alt || "";
+                    }
+
+                    if (toSpeak.trim() !== "") speakText(toSpeak);
+                }, 50);
+            }
+        });
+    </script>
+</body>
+</html>
