@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>அணுகல் உணவு விநியோகம் - முழு தளம்</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #27ae60;
+            --accent-color: #e67e22;
+            --bg-color: #f9f9f9;
+            --text-color: #2c3e50;
+        }
+
+        body {
+            font-family: 'Arima', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #fff;
+            padding: 20px;
+            border-bottom: 4px solid var(--primary-color);
+            text-align: center;
+        }
+
+        /* கீபோர்டு போக்கஸ் - மிக முக்கியம் */
+        :focus {
+            outline: 4px solid var(--accent-color);
+            outline-offset: 4px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .food-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-section, .address-section, .delivery-tracking {
+            background: #fff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Arima';
+        }
+
+        .btn-qty {
+            background: var(--accent-color);
+            margin: 0 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: 'Arima';
+            font-size: 1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #eee;
+            border-radius: 5px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent-color);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+        }
+        .skip-link:focus { top: 0; }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" class="skip-link">உள்ளடக்கத்திற்குச் செல்லவும்</a>
+
+    <header role="banner">
+        <h1>சுவை உணவகம் 🍽️</h1>
+        <p>அனைவருக்குமான அன்பான உணவுச் சேவை</p>
+    </header>
+
+    <main class="container" id="main-content">
+        
+        <section aria-label="உணவுப் பட்டியல்">
+            <h2>இன்றைய மெனு</h2>
+            
+            <div class="food-card" tabindex="0" aria-label="மசாலா தோசை விலை 80 ரூபாய்">
+                <div>
+                    <h3>மசாலா தோசை</h3>
+                    <p>விலை: ₹80</p>
+                </div>
+                <button class="btn" onclick="addToCart('மசாலா தோசை', 80)">கூடையில் சேர்க்க</button>
+            </div>
+
+            <div class="food-card" tabindex="0" aria-label="இட்லி சாம்பார் விலை 40 ரூபாய்">
+                <div>
+                    <h3>இட்லி சாம்பார்</h3>
+                    <p>விலை: ₹40</p>
+                </div>
+                <button class="btn" onclick="addToCart('இட்லி சாம்பார்', 40)">கூடையில் சேர்க்க</button>
+            </div>
+        </section>
+
+        <section class="cart-section" id="cart" aria-live="polite">
+            <h2>🛒 உங்கள் கூடை</h2>
+            <div id="cart-items">கூடை காலியாக உள்ளது.</div>
+            <h3 id="total-price">மொத்தம்: ₹0</h3>
+        </section>
+
+        <section class="address-section">
+            <h2>📍 முகவரி விபரங்கள்</h2>
+            <label for="user-address">உங்கள் டெலிவரி முகவரி:</label>
+            <textarea id="user-address" rows="3" onblur="announceAddress()" placeholder="கதவு எண், தெரு பெயர்..."></textarea>
+            
+            <div style="margin-top:15px;">
+                <strong>கடை முகவரி:</strong> 
+                <p>எண் 12, அண்ணா சாலை, சென்னை.</p>
+            </div>
+        </section>
+
+        <section class="delivery-tracking" id="tracking-area" style="display:none;">
+            <h2>🚚 டெலிவரி கண்காணிப்பு</h2>
+            <p id="distance-info">தற்போது: கணக்கிடப்படுகிறது...</p>
+            <div class="status-badge" id="live-status">தயார் நிலையில் உள்ளது</div>
+        </section>
+
+        <button class="btn" style="width:100%; margin-top:20px; background:#2980b9;" onclick="startPayment()">பணம் செலுத்தி ஆர்டர் செய்யவும்</button>
+
+    </main>
+
+    <script>
+        let cart = {};
+        let total = 0;
+
+        // 1. AI பேச்சுப்பொறி (Tamil Speech)
+        function speak(text) {
+            window.speechSynthesis.cancel(); // பழைய பேச்சை நிறுத்து
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'ta-IN';
+            window.speechSynthesis.speak(msg);
+        }
+
+        // 2. கூடையில் சேர்த்தல்
+        function addToCart(name, price) {
+            if (cart[name]) {
+                cart[name].qty += 1;
+            } else {
+                cart[name] = { price: price, qty: 1 };
+            }
+            updateUI();
+            speak(`${name} கூடையில் சேர்க்கப்பட்டது.`);
+        }
+
+        // 3. எண்ணிக்கையை மாற்றுதல்
+        function changeQty(name, delta) {
+            cart[name].qty += delta;
+            if (cart[name].qty <= 0) {
+                delete cart[name];
+                speak(`${name} நீக்கப்பட்டது.`);
+            } else {
+                speak(`${name} எண்ணிக்கை ${cart[name].qty} என மாற்றப்பட்டது.`);
+            }
+            updateUI();
+        }
+
+        // 4. திரையை புதுப்பித்தல்
+        function updateUI() {
+            const container = document.getElementById('cart-items');
+            const totalDisplay = document.getElementById('total-price');
+            container.innerHTML = '';
+            total = 0;
+
+            Object.keys(cart).forEach(name => {
+                const item = cart[name];
+                total += item.price * item.qty;
+                container.innerHTML += `
+                    <div class="food-card">
+                        <span>${name} (x${item.qty})</span>
+                        <div>
+                            <button class="btn btn-qty" onclick="changeQty('${name}', 1)" aria-label="அதிகரி">+ </button>
+                            <button class="btn btn-qty" onclick="changeQty('${name}', -1)" aria-label="குறை">- </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (Object.keys(cart).length === 0) container.innerHTML = 'கூடை காலியாக உள்ளது.';
+            totalDisplay.innerText = `மொத்தம்: ₹${total}`;
+        }
+
+        // 5. முகவரி அறிவிப்பு
+        function announceAddress() {
+            const addr = document.getElementById('user-address').value;
+            if(addr) speak("டெலிவரி முகவரி உறுதி செய்யப்பட்டது: " + addr);
+        }
+
+        // 6. பணம் செலுத்துதல் மற்றும் டிராக்கிங் தொடக்கம்
+        function startPayment() {
+            if (total === 0) {
+                speak("தயவுசெய்து உணவைத் தேர்ந்தெடுக்கவும்.");
+                return;
+            }
+            speak("பணம் செலுத்தப்பட்டது. உங்கள் உணவு இன்னும் சில நிமிடங்களில் வந்து சேரும்.");
+            document.getElementById('tracking-area').style.display = 'block';
+            simulateTracking();
+        }
+
+        // 7. நேரலை தொலைவு கண்காணிப்பு (Simulation)
+        function simulateTracking() {
+            let km = 5;
+            const statusLabel = document.getElementById('live-status');
+            const distLabel = document.getElementById('distance-info');
+
+            const timer = setInterval(() => {
+                km -= 1;
+                if (km > 0) {
+                    const txt = `உணவு கொண்டு வருபவர் ${km} கிலோமீட்டர் தொலைவில் உள்ளார்.`;
+                    distLabel.innerText = txt;
+                    statusLabel.innerText = "பயணத்தில் உள்ளது...";
+                    speak(txt);
+                } else {
+                    const finalTxt = "உணவு உங்கள் வாசலுக்கு வந்துவிட்டது!";
+                    distLabel.innerText = finalTxt;
+                    statusLabel.innerText = "வந்துவிட்டது!";
+                    speak(finalTxt);
+                    clearInterval(timer);
+                }
+            }, 8000); // ஒவ்வொரு 8 வினாடிக்கும் அறிவிப்பு வரும்
+        }
+
+        // கீபோர்டு மூலம் கார்டுகளுக்கு வரும்போது வாசிக்க
+        document.querySelectorAll('.food-card').forEach(card => {
+            card.addEventListener('focus', () => {
+                speak(card.getAttribute('aria-label'));
+            });
+        });
+    </script>
+</body>
+</html>
