@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ஜோதிட சாம்ராஜ்யம் </title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@700&family=Anek+Tamil:wght@300;500;800&family=Kavivanar&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --deep-navy: #05070a;
+            --accent-purple: #3d1d5a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --heading-font: 'Arima', cursive;
+            --body-font: 'Anek Tamil', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--deep-navy);
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            color: #e0e0e0;
+            font-family: var(--body-font);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            background: rgba(5, 7, 10, 0.95);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--gold);
+        }
+
+        nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover { text-shadow: 0 0 10px var(--gold); }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, var(--deep-navy));
+        }
+
+        .hero h1 {
+            font-family: var(--heading-font);
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .live-timer {
+            font-family: 'Kavivanar';
+            color: #aaa;
+            margin-top: 15px;
+            border: 1px solid var(--glass);
+            padding: 5px 20px;
+            border-radius: 50px;
+        }
+
+        /* --- Main Content Grid --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .content-card {
+            background: var(--glass);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        h2 { font-family: var(--heading-font); color: var(--gold); margin-bottom: 20px; font-size: 2rem; }
+
+        /* --- Interactive Zodiac Table --- */
+        .astro-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .astro-table th, .astro-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .astro-table th { color: var(--gold); }
+
+        /* --- Featured Elements --- */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+        .feature-box {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 3px solid var(--gold);
+        }
+
+        .feature-box h4 { color: var(--gold); margin-bottom: 10px; }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-purple);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        /* --- Sidebar Features --- */
+        .sidebar-item {
+            background: linear-gradient(145deg, #161b22, #0b0d17);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home">முகப்பு</a>
+        <a href="#horoscope">ராசி பலன்</a>
+        <a href="#panchangam">பஞ்சாங்கம்</a>
+        <a href="#matching">பொருத்தம்</a>
+        <a href="#planets">கிரகங்கள்</a>
+        <a href="#remedies">பரிகாரம்</a>
+        <a href="#learn">கல்வி</a>
+        <a href="#contact">தொடர்பு</a>
+    </nav>
+
+    <section class="hero">
+        <h1>ஜோதிட சாம்ராஜ்யம்</h1>
+        <p class="tagline" style="font-size: 1.4rem;">காலத்தின் ரகசியங்களை அறியுங்கள்</p>
+        <div class="live-timer" id="clock">Loading Time...</div>
+    </section>
+
+    <div class="container">
+        
+        <main>
+            <div class="content-card">
+                <h2>இன்றைய கிரக நிலைகள் (Transit Positions)</h2>
+                <p>தற்போதைய கோள்களின் சஞ்சாரம் உங்கள் வாழ்க்கையில் ஏற்படுத்தும் மாற்றங்கள்:</p>
+                <table class="astro-table">
+                    <thead>
+                        <tr>
+                            <th>கிரகம்</th>
+                            <th>ராசி</th>
+                            <th>நிலை</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>சூரியன் (Sun)</td><td>கும்பம்</td><td>நட்பு</td></tr>
+                        <tr><td>சந்திரன் (Moon)</td><td>ரிஷபம்</td><td>உச்சம்</td></tr>
+                        <tr><td>செவ்வாய் (Mars)</td><td>மிதுனம்</td><td>பகை</td></tr>
+                        <tr><td>புதன் (Mercury)</td><td>மகரம்</td><td>சமம்</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-card">
+                <h2>சிறப்பு அம்சங்கள் (Key Services)</h2>
+                <div class="grid-3">
+                    <div class="feature-box">
+                        <span class="badge">புதியது</span>
+                        <h4>ஜாதக கணிதம்</h4>
+                        <p>துல்லியமான கணித முறையில் ஜாதகம் கணிக்கப்படும்.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>பெயர் பொருத்தம்</h4>
+                        <p>எண் கணித அடிப்படையில் சிறந்த பெயர்களைத் தேர்வு செய்தல்.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>வாஸ்து சாஸ்திரம்</h4>
+                        <p>வீடு மற்றும் அலுவலகத்திற்கான வாஸ்து ஆலோசனைகள்.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside>
+            <div class="sidebar-item">
+                <h3>இன்றைய விசேஷம்</h3>
+                <p style="color: var(--gold); font-weight: bold; margin-top: 10px;">சுக்ல பட்ச ஏகாதசி</p>
+                <p style="font-size: 0.9rem;">இன்று விரதம் இருப்பது மன அமைதிக்கும் செல்வத்திற்கும் உகந்தது.</p>
+            </div>
+
+            <div class="sidebar-item">
+                <h3>நேரக் கணக்கீடு</h3>
+                <ul style="list-style: none; font-size: 0.9rem; margin-top: 10px;">
+                    <li>⏳ ராகு காலம்: 07:30 - 09:00</li>
+                    <li>⌛ எமகண்டம்: 10:30 - 12:00</li>
+                    <li>✨ குளிகை: 13:30 - 15:00</li>
+                </ul>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer style="text-align: center; padding: 60px; border-top: 1px solid var(--glass);">
+        <p style="font-family: 'Kavivanar';">நிழல் கிரகங்களின் ஆசீர்வாதத்துடன்...</p>
+        <p style="margin-top: 10px; opacity: 0.5;">© 2026 ஜெயசீலன் சாமுவேல் | அனைத்து உரிமைகளும் காப்புரிமைசெய்யப்பட்டன</p>
+    </footer>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('clock').innerText = now.toLocaleDateString('ta-IN', options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
